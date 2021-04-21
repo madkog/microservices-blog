@@ -1,0 +1,56 @@
+version: "3.5"
+
+services:
+  client:
+    build:
+      context: ./packages/client
+      dockerfile: Dockerfile.dev
+    env_file:
+     - ./packages/client/.env.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./packages/client/:/app
+      - /app/node_modules
+
+  posts:
+    build:
+      context: ./packages/posts
+      dockerfile: Dockerfile.dev
+    env_file:
+     - ./packages/posts/.env.dev
+    ports:
+      - 3001:3001
+    volumes:
+      - ./packages/posts/:/app
+      - /app/node_modules
+
+    comments:
+      build:
+        context: ./packages/comments
+        dockerfile: Dockerfile.dev
+      env_file:
+        - ./packages/comments/.env.dev
+      ports:
+        - 3002:3002
+      volumes:
+        - ./packages/comments/:/app
+        - /app/node_modules
+
+  mysql:
+    image: mysql
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes: 
+      - ./init_db.sh:/data/application/init_db.sh
+      # - "./mysql:/var/lib/mysql"
+      #- "./init.sql:/docker-entrypoint-initdb.d"
+    ports:
+     - 3306:3306 
+
+      # links:
+      # - "mongo:mongo.openconceptlab.org"
+      # - "solr:solr.openconceptlab.org"
+      # - "some-service:some-alias"
