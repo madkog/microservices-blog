@@ -25,17 +25,17 @@ services:
       - ./packages/posts/:/app
       - /app/node_modules
 
-    comments:
-      build:
-        context: ./packages/comments
-        dockerfile: Dockerfile.dev
-      env_file:
-        - ./packages/comments/.env.dev
-      ports:
-        - 3002:3002
-      volumes:
-        - ./packages/comments/:/app
-        - /app/node_modules
+  comments:
+    build:
+      context: ./packages/comments
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./packages/comments/.env.dev
+    ports:
+      - 3002:3002
+    volumes:
+      - ./packages/comments/:/app
+      - /app/node_modules
 
   mysql:
     image: mysql
